@@ -10,6 +10,8 @@ import React from 'react';
 
 import Cover from './src/main_pages/Cover';
 import Login from './src/main_pages/Login';
+import Profile from './src/main_pages/Profile';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -44,6 +46,11 @@ const App: () => React$Node = () => {
           options={{headerShown: false}}
           name="Login"
           component={Login}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Profile"
+          component={Profile}
         />
       </Stack.Navigator>
     </NavigationContainer>
