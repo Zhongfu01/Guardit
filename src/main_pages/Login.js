@@ -20,6 +20,7 @@ export default function Login({ navigation }) {
         </View>
 
         <View style={styles.contentBox}>
+
           <View style={styles.inputBox}>
             <Text style={styles.text}>Email / Account #</Text>
             <View style={styles.textInputWrapper}>
