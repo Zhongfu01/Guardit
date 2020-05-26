@@ -23,16 +23,14 @@ export default function Cover({ navigation }) {
           </Text>
         </View>
 
-        <View>
-          <Text style={styles.content}>
+          <View style={styles.content}>
             <View style={styles.inputBox}>
               <Text style={styles.text}>Email / Account #</Text>
               <View style={styles.textInputWrapper}>
                 <TextInput style={styles.textInput} autoCorrect={false} autoCapitalize={'none'}/>
               </View>
             </View>
-          </Text>
-        </View>
+          </View>
 
         <TouchableOpacity onPress={()=>{alert("Done");}} style={styles.nextButton}>
           <Text style={styles.nextButtonText}>
@@ -62,8 +60,6 @@ const styles = StyleSheet.create({
     paddingVertical: 70,
   },
   content: {
-    fontSize: 20,
-    color: "white",
     width: 300,
   },
   nextButton: {
@@ -84,11 +80,15 @@ const styles = StyleSheet.create({
     width: 250,
     marginVertical: 10,
   },
+  text: {
+    fontSize: 20,
+    color: "white",
+  },
   textInput: {
       fontSize: 20,
       alignSelf: 'auto',
       marginVertical: 10,
       color: 'white',
 
-  },
+  }
 });

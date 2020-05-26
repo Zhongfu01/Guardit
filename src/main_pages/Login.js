@@ -5,7 +5,7 @@ import {
         Text,
         View,
         TextInput,
-        TouchableHighlight
+        TouchableOpacity
 } from "react-native";
 
 const image = require("../../image/background/fade.jpg");
@@ -35,11 +35,11 @@ export default function Login({ navigation }) {
             </View>
           </View>
 
-          <TouchableHighlight style={styles.highlightWrapper} onPress={function(){
+          <TouchableOpacity style={styles.highlightWrapper} onPress={function(){
             navigation.navigate('Profile')
           }}>
             <Text style={styles.signinText}>Sign in</Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.footnoteBox}>

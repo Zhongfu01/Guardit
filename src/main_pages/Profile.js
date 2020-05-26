@@ -44,7 +44,7 @@ export default function Cover({ navigation }) {
 
           <TouchableOpacity onPress={()=>{alert("!");}} style={styles.iconContainer}>
             <Image source={icon3} style={styles.iconImage} />
-            <Text> Edit Profile </Text>
+            <Text> Profile </Text>
           </TouchableOpacity>
 
 
