@@ -4,7 +4,7 @@ import { ImageBackground, StyleSheet, Text, View } from "react-native";
 const image = require("../../image/background/fade.jpg");
 
 export default function Cover({ navigation }) {
-  setTimeout(function(){navigation.navigate('Login')}, 2000);
+  setTimeout(function(){navigation.navigate('Login')}, 1000);
   return (
     <View style={styles.container}>
       <ImageBackground source={image} style={styles.image}>

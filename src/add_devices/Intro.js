@@ -1,39 +1,46 @@
 import React from "react";
 import {
+  Dimensions,
   ImageBackground,
   StyleSheet,
   Text,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 
 const backgroundImage = require("../../image/background/fade.jpg");
 const rightArrowImage = require("../../image/icon/next.png");
 
+const screenHeight = Dimensions.get('window').height;
 
 export default function Cover({ navigation }) {
   return (
     <View style={styles.container}>
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <View>
-          <Text style={styles.title}>
-            Connect your Guardit Beetle
-          </Text>
-        </View>
+        <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
+          <View>
+            <Text style={styles.title}>
+              Connect your Guardit Beetle
+            </Text>
+          </View>
 
-        <View>
-          <Text style={styles.content}>
-            To link your Guardit Beetle to your account,
-            please make sure the Beetle has a mobile sim card attached to it.
-          </Text>
-        </View>
+          <View>
+            <Text style={styles.content}>
+              To link your Guardit Beetle to your account,
+              please make sure the Beetle has a mobile sim card attached to it.
+            </Text>
+          </View>
 
-        <TouchableOpacity onPress={()=>{navigation.navigate('Link');}} style={styles.nextButton}>
-          <Text style={styles.nextButtonText}>
-            Got it  <Image style={styles.nextButtonImage} source={rightArrowImage}/>
-          </Text>
-        </TouchableOpacity>
+          <View style={styles.nextButtonContainer}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('Link');}} style={styles.nextButton}>
+              <Text style={styles.nextButtonText}>
+                Got it  <Image style={styles.nextButtonImage} source={rightArrowImage}/>
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
 
       </ImageBackground>
     </View>
@@ -54,16 +61,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 45,
     color: "white",
-    paddingVertical: 70,
+    paddingVertical: screenHeight * .05,
   },
   content: {
     fontSize: 20,
     color: "white",
     width: 300,
   },
+  nextButtonContainer: {
+    marginTop: screenHeight * .3
+  },
   nextButton: {
     alignItems: "center",
-    marginTop: 320,
     justifyContent: "center"
   },
   nextButtonText: {
@@ -72,5 +81,9 @@ const styles = StyleSheet.create({
   nextButtonImage: {
     width: 15,
     height: 15,
+  },
+  scrollView: {
+    width: "100%",
+    alignItems: "center"
   }
 });

@@ -14,6 +14,8 @@ import Profile from './src/main_pages/Profile';
 import Intro from './src/add_devices/Intro';
 import Link from './src/add_devices/Link';
 import List from './src/manage/List';
+import Signup from './src/main_pages/Signup';
+
 
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -41,12 +43,13 @@ const App: () => React$Node = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Cover" component={Cover} options={{headerShown: false}} />
+        <Stack.Screen options={{headerShown: false}} name="Cover" component={Cover} />
         <Stack.Screen options={{headerShown: false}} name="Login" component={Login} />
         <Stack.Screen options={{headerShown: false}} name="Profile" component={Profile} />
         <Stack.Screen options={{headerShown: true}} name="Intro" component={Intro} />
         <Stack.Screen options={{headerShown: true}} name="Link" component={Link} />
         <Stack.Screen options={{headerShown: true}} name="List" component={List} />
+        <Stack.Screen options={{headerShown: true}} name="Signup" component={Signup} />
       </Stack.Navigator>
     </NavigationContainer>
   );

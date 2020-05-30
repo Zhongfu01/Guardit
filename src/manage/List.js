@@ -7,7 +7,8 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  Switch
+  Switch,
+  ScrollView
 } from "react-native";
 
 const backgroundImage = require("../../image/background/fade.jpg");
@@ -20,66 +21,67 @@ export default function Cover({ navigation }) {
   return (
     <View style={styles.container}>
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <View>
-          <Text style={styles.title}>
-            Devices
-          </Text>
-        </View>
-
-        <View style={styles.content}>
-
-          <View style={[styles.deviceCard, {backgroundColor: "#2EA399"}]}>
-            <View style={styles.deviceCardLeft}>
-              <Text style={styles.cardText}>Picnic 1 </Text>
-
-              <View style={styles.switchContainer}>
-                  <View style={styles.switchCircle}>
-                    <Switch
-                      style={styles.switch}
-                      trackColor={{ false: "#cccccc", true: "#cccccc" }}
-                      thumbColor={"white"}
-                      ios_backgroundColor="#2EA399"
-                      onValueChange={()=>{}}
-                      value={true}
-                      opacity={0.9}
-                    />
-                  </View>
-                  <Text style={styles.switchText}>
-                    On
-                  </Text>
-              </View>
-
-            </View>
-            <Image source={beetle1} style={styles.beetleImage}/>
+        <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
+          <View>
+            <Text style={styles.title}>
+              Devices
+            </Text>
           </View>
 
-          <View style={[styles.deviceCard, {backgroundColor: "#1271D0"}]}>
-            <View style={styles.deviceCardLeft}>
-              <Text style={styles.cardText}>Library 1 </Text>
+          <View style={styles.content}>
 
-              <View style={styles.switchContainer}>
-                  <View style={styles.switchCircle}>
-                    <Switch
-                      style={styles.switch}
-                      trackColor={{ false: "#cccccc", true: "#cccccc" }}
-                      thumbColor={"white"}
-                      ios_backgroundColor="#2EA399"
-                      onValueChange={()=>{}}
-                      value={true}
-                      opacity={0.9}
-                    />
-                  </View>
-                  <Text style={styles.switchText}>
-                    On
-                  </Text>
+            <View style={[styles.deviceCard, {backgroundColor: "#2EA399"}]}>
+              <View style={styles.deviceCardLeft}>
+                <Text style={styles.cardText}>Picnic 1 </Text>
+
+                <View style={styles.switchContainer}>
+                    <View style={styles.switchCircle}>
+                      <Switch
+                        style={styles.switch}
+                        trackColor={{ false: "#cccccc", true: "#cccccc" }}
+                        thumbColor={"white"}
+                        ios_backgroundColor="#2EA399"
+                        onValueChange={()=>{}}
+                        value={true}
+                        opacity={0.9}
+                      />
+                    </View>
+                    <Text style={styles.switchText}>
+                      On
+                    </Text>
+                </View>
+
               </View>
-
+              <Image source={beetle1} style={styles.beetleImage}/>
             </View>
-            <Image source={beetle2} style={styles.beetleImage}/>
+
+            <View style={[styles.deviceCard, {backgroundColor: "#1271D0"}]}>
+              <View style={styles.deviceCardLeft}>
+                <Text style={styles.cardText}>Library 1 </Text>
+
+                <View style={styles.switchContainer}>
+                    <View style={styles.switchCircle}>
+                      <Switch
+                        style={styles.switch}
+                        trackColor={{ false: "#cccccc", true: "#cccccc" }}
+                        thumbColor={"white"}
+                        ios_backgroundColor="#2EA399"
+                        onValueChange={()=>{}}
+                        value={true}
+                        opacity={0.9}
+                      />
+                    </View>
+                    <Text style={styles.switchText}>
+                      On
+                    </Text>
+                </View>
+
+              </View>
+              <Image source={beetle2} style={styles.beetleImage}/>
+            </View>
+
           </View>
-
-        </View>
-
+        </ScrollView>
       </ImageBackground>
     </View>
   );
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     paddingVertical: 5,
-    alignItems: "center",
+    width: "100%",
     flex: 1,
     resizeMode: "cover",
   },
@@ -152,5 +154,9 @@ const styles = StyleSheet.create({
   switchText: {
     color: "white",
     fontSize: 20,
+  },
+  scrollView: {
+    width: "100%",
+    alignItems: "center",
   }
 });

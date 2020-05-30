@@ -1,54 +1,107 @@
-import React from "react";
+import React, {useState} from "react";
 import {
         ImageBackground,
         StyleSheet,
         Text,
         View,
         TextInput,
-        TouchableOpacity
+        TouchableOpacity,
+        ScrollView,
+        Dimensions,
+        Alert
 } from "react-native";
 
+import {get_request} from '../request/Requests';
+import {LocalSignInUrl} from '../../url/Guardit';
+import {UserInfo} from '../global';
+
 const image = require("../../image/background/fade.jpg");
+const screenHeight = Dimensions.get('window').height;
+
 
 export default function Login({ navigation }) {
-  setTimeout(function(){}, 2000);
+
+  const [username, setUsername] = useState('');
+  const [passwords, setPasswords] = useState('')
+
+  function sign_in() {
+
+    get_request(LocalSignInUrl, {username: username, passwords: passwords})
+    .then(jsonResponse => {
+      // success
+      UserInfo.firstName = jsonResponse['firstName']
+      UserInfo.lastName = jsonResponse['lastName']
+      UserInfo.userId = jsonResponse['userId']
+      UserInfo.username = username;
+      UserInfo.passwords = passwords;
+      navigation.navigate('Profile');
+    })
+    .catch(errorMessage => {
+      Alert.alert(
+        //title
+        'Login Error',
+        //body
+        "Wrong password or username, please try again.",
+        [
+          // {text: 'Yes', onPress: () => console.log('Yes Pressed')},
+          // {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
+        ],
+        { cancelable: true }
+        //clicking out side of alert will cancel
+      );
+    })
+
+
+  }
   return (
     <View style={styles.container}>
-      <ImageBackground source={image} style={styles.image}>
-        <View style={styles.titleBox}>
-          <Text style={styles.title}>Welcome Back</Text>
-        </View>
-
-        <View style={styles.contentBox}>
-
-          <View style={styles.inputBox}>
-            <Text style={styles.text}>Email / Account #</Text>
-            <View style={styles.textInputWrapper}>
-              <TextInput style={styles.textInput} autoCorrect={false} autoCapitalize={'none'}/>
-            </View>
+        <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
+          <View style={styles.titleBox}>
+            <Text style={styles.title}>Welcome Back</Text>
           </View>
 
-          <View style={styles.inputBox}>
-            <Text style={styles.text}>Passwords</Text>
-            <View style={styles.textInputWrapper}>
-              <TextInput style={styles.textInput} secureTextEntry={true} autoCorrect={false}/>
+          <View style={styles.contentBox}>
+
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Email / Account #</Text>
+              <View style={styles.textInputWrapper}>
+                <TextInput
+                  style={styles.textInput}
+                  autoCorrect={false}
+                  autoCapitalize={'none'}
+                  onChangeText={text => setUsername(text)}
+                />
+              </View>
             </View>
+
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Passwords</Text>
+              <View style={styles.textInputWrapper}>
+                <TextInput
+                  style={styles.textInput}
+                  secureTextEntry={true}
+                  autoCorrect={false}
+                  blurOnSubmit={false}
+                  onChangeText={text => setPasswords(text)}
+                />
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={styles.highlightWrapper}
+              onPress={() => {sign_in()}}>
+              <Text style={styles.signinText}>Sign in</Text>
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.highlightWrapper} onPress={function(){
-            navigation.navigate('Profile')
-          }}>
-            <Text style={styles.signinText}>Sign in</Text>
+          <TouchableOpacity
+            style={styles.footnoteBox}
+            onPress={() => {navigation.navigate('Signup')}}>
+            <Text style={styles.footnodeText}>
+              Don't have an account?
+            </Text>
           </TouchableOpacity>
-        </View>
-
-        <View style={styles.footnoteBox}>
-          <Text style={styles.footnodeText}>
-            Don't have an account?
-          </Text>
-        </View>
-
-      </ImageBackground>
+        </ScrollView>
     </View>
   );
 }
@@ -56,27 +109,22 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column"
+    flexDirection: "column",
+    backgroundColor: "#449dd1"
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
   },
   titleBox: {
-    flex: 1.2,
+    marginTop: screenHeight * .12,
     justifyContent: "flex-end",
     alignItems: "center",
-
-    // borderWidth: 4,
-    // borderColor: "#20232a",
-    // borderRadius: 6,
   },
   contentBox: {
     alignItems: "flex-start",
     paddingHorizontal: 58,
     paddingVertical: 70,
-    flex: 3,
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
   },
   title: {
     color: "white",
@@ -112,12 +160,16 @@ const styles = StyleSheet.create({
     width: 150
   },
   footnoteBox: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   footnodeText: {
     fontSize: 20,
     color: "#8bafb5"
+  },
+  scrollView: {
+    alignItems: "center",
+    width: "100%",
+    paddingVertical: 10
   }
 });
