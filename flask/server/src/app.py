@@ -124,7 +124,7 @@ def register_device():
 @app.route('/register_device', methods=['GET'])
 def testTrigger():
     testRef = db.collection('testTrigger')
-    tests = list(testRef.limit(1).get()) 
+    tests = list(testRef.limit(1).get())
 
     test = tests[0]
     testDict = test.to_dict()
