@@ -15,6 +15,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2154CCF52485B18300A4B2FD /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2154CCF42485B18300A4B2FD /* UserNotifications.framework */; };
 		2154CCFB2485B7C200A4B2FD /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2154CCFA2485B7C200A4B2FD /* libRNFirebase.a */; };
+		2154CD0224898D8100A4B2FD /* BleManagerFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154CD0124898D8100A4B2FD /* BleManagerFile.swift */; };
 		21A4C325247CBDC90053B6F3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21A4C324247CBDC90053B6F3 /* GoogleService-Info.plist */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -64,6 +65,8 @@
 		2154CCEE2485B12200A4B2FD /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		2154CCF42485B18300A4B2FD /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		2154CCFA2485B7C200A4B2FD /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFirebase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2154CD0024898D8000A4B2FD /* Guardit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Guardit-Bridging-Header.h"; sourceTree = "<group>"; };
+		2154CD0124898D8100A4B2FD /* BleManagerFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleManagerFile.swift; sourceTree = "<group>"; };
 		21A4C324247CBDC90053B6F3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Guardit/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Guardit-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Guardit-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Guardit-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Guardit-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -202,12 +205,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2154CD0124898D8100A4B2FD /* BleManagerFile.swift */,
 				13B07FAE1A68108700A75B9A /* Guardit */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GuarditTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				430A0464A10DB1DAFC8B414A /* Pods */,
+				2154CD0024898D8000A4B2FD /* Guardit-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -323,7 +328,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 533B6U6WQY;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1150;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -626,6 +631,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				2154CD0224898D8100A4B2FD /* BleManagerFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,6 +684,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A3C77A3AE7E882D658371EA6 /* Pods-Guardit-GuarditTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -701,6 +708,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B98F69E63FCA6917E2E42693 /* Pods-Guardit-GuarditTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = GuarditTests/Info.plist;
@@ -742,6 +750,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Zhongfu-Guard-it";
 				PRODUCT_NAME = Guardit;
+				SWIFT_OBJC_BRIDGING_HEADER = "Guardit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -768,6 +777,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Zhongfu-Guard-it";
 				PRODUCT_NAME = Guardit;
+				SWIFT_OBJC_BRIDGING_HEADER = "Guardit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

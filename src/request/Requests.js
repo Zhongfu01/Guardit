@@ -46,3 +46,28 @@ export function get_request(url, jsonFile) {
       })
   });
 }
+
+// put request
+export function put_request(url, jsonFile) {
+  // url = encode_query_data_to_url(url, jsonFile)
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonFile)
+    })
+    .then(response => response.json())
+    .then(response => {
+      // alert(JSON.stringify(response));
+      if (response["success"]) {
+        resolve(response);
+      }
+      else {
+        reject(response);
+      }
+    })
+  });
+}

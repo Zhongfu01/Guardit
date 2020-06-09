@@ -26,6 +26,7 @@ def sign_in():
     username = data['username']
     passwords = data['passwords']
     userRef = db.collection('users')
+    deviceRef = db.collection('devices')
 
     users = userRef.where('username', '==', username).limit(1).get()
     users = list(users)
@@ -33,16 +34,23 @@ def sign_in():
     if len(users) == 0:
         result['success'] = False
         return jsonify(result), 400
-    else:
-        user = users[0]
-        userDict = user.to_dict()
-        result.update(userDict)
-        result.update({'userId': user.id})
 
-        return jsonify(result), 200
+    user = users[0]
+    devices = deviceRef.where('userId', '==', user.id).get()
+    devices = list(devices)
 
+    # reorder devices dictionary list into a dictionary
+    devicesDictList = [d.to_dict() for d in devices];
+    devicesDict = {}
+    for d in devicesDictList:
+        devicesDict[d["serialNumber"]] = d
 
+    userDict = user.to_dict()
+    result["data"] = userDict
+    result["data"].update({'userId': user.id})
+    result["data"].update({'devices': devicesDict})
 
+    return jsonify(result), 200
 
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
@@ -80,7 +88,34 @@ def sign_up():
     user = users[0]
     userDict = user.to_dict()
     userDict.update({'user_id': user.id})
-    result.update(userDict)
+    result["data"] = userDict
+    return jsonify(result), 200
+
+@app.route('/update_user', methods=['POST'])
+def update_user():
+    """
+    sign_up(): sign up new users according to request data.
+    """
+    result = {"success": True}
+    data = request.get_json();
+    userRef = db.collection('users')
+
+    existUsers = userRef.where('userId', '==', data['userId']).limit(1).get()
+    users = list(existUsers)
+
+    # user doesn't exists
+    if len(users) == 0:
+        result['success'] = False
+        return jsonify(result), 400
+
+    # username exist, then update
+    userRef.document().set(
+        {"firstName": data["firstName"],
+         "lastName": data["lastName"],
+         "username": data["username"],
+         "passwords": data["passwords"]
+        }
+    )
     return jsonify(result), 200
 
 @app.route('/register_device', methods=['POST'])
@@ -115,24 +150,42 @@ def register_device():
         deviceDict['registered'] = True
         deviceDict['userId'] = userId
         deviceRef.document(device.id).update(deviceDict)
-        result.update(deviceDict)
+        result["data"] = deviceDict
         return jsonify(result), 200
     else:
         result['success'] = False
         return jsonify(result), 400
 
-@app.route('/register_device', methods=['GET'])
-def testTrigger():
-    testRef = db.collection('testTrigger')
-    tests = list(testRef.limit(1).get())
+@app.route('/update_device', methods=['POST'])
+def update_device():
+    """
+    update_device(): update a device info according to request data.
+    """
+    result = {"success": True}
+    data = request.get_json();
 
-    test = tests[0]
-    testDict = test.to_dict()
+    if 'serialNumber' not in data or data['serialNumber'] == '' \
+        or 'userId' not in data or data['userId'] == '':
+        result['success'] = False
+        return jsonify(result), 400
 
-    testDict['triggered'] = True;
-    testRef.document(test.id).update(testDict)
+    serialNumber = data['serialNumber']
+    userId = data['userId']
+    newDevice = data
+    deviceRef = db.collection('devices')
 
-    return "thank you", 200
+    devices = deviceRef.where('serialNumber', '==', serialNumber).get()
+    devices = list(devices)
+    device = devices[0]
+    deviceDict = device.to_dict()
+
+    if len(devices) == 0 or deviceDict['userId'] != userId:
+        result['success'] = False
+        return jsonify(result), 400
+
+    deviceRef.document(device.id).update(data)
+    return jsonify(result), 200
+
 
 
 @app.route('/add', methods=['POST'])

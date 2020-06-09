@@ -14,6 +14,7 @@ import {
 import {get_request} from '../request/Requests';
 import {LocalSignInUrl} from '../../url/Guardit';
 import {UserInfo} from '../global';
+import {make_alert} from '../Tool';
 
 const image = require("../../image/background/fade.jpg");
 const screenHeight = Dimensions.get('window').height;
@@ -29,26 +30,17 @@ export default function Login({ navigation }) {
     get_request(LocalSignInUrl, {username: username, passwords: passwords})
     .then(jsonResponse => {
       // success
+      jsonResponse = jsonResponse["data"]
       UserInfo.firstName = jsonResponse['firstName']
       UserInfo.lastName = jsonResponse['lastName']
       UserInfo.userId = jsonResponse['userId']
       UserInfo.username = username;
       UserInfo.passwords = passwords;
+      UserInfo.devices = jsonResponse['devices'];
       navigation.navigate('Profile');
     })
     .catch(errorMessage => {
-      Alert.alert(
-        //title
-        'Login Error',
-        //body
-        "Wrong password or username, please try again.",
-        [
-          // {text: 'Yes', onPress: () => console.log('Yes Pressed')},
-          // {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
-        ],
-        { cancelable: true }
-        //clicking out side of alert will cancel
-      );
+      make_alert("Login Error", "Wrong password or username, please try again.")
     })
 
 

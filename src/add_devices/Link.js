@@ -15,6 +15,7 @@ import {
 import {post_request} from '../request/Requests';
 import {LocalRegisterDeviceUrl} from '../../url/Guardit';
 import {UserInfo} from '../global';
+import {make_alert} from '../Tool';
 
 const backgroundImage = require("../../image/background/fade.jpg");
 const rightArrowImage = require("../../image/icon/next.png");
@@ -26,15 +27,7 @@ export default function Link({ navigation }) {
 
   function register_device() {
     if (serialNumber == '') {
-      Alert.alert(
-        'Failed',
-        "The device serial number cannot be blank!",
-        [
-          // {text: 'Yes', onPress: () => console.log('Yes Pressed')},
-          // {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
-        ],
-        { cancelable: true }
-      );
+      make_alert("Failed", "The device serial number cannot be blank!")
       return;
     }
     post_request(
@@ -46,28 +39,13 @@ export default function Link({ navigation }) {
     )
     .then(jsonResponse => {
       // success
-      Alert.alert(
-        'Success',
-        "The device has been registered successfully",
-        [
-          // {text: 'Yes', onPress: () => console.log('Yes Pressed')},
-          // {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
-        ],
-        { cancelable: true }
-      );
+      jsonResponse = jsonResponse["data"]
+      make_alert("Success", "The device has been registered successfully.")
       UserInfo.devices[jsonResponse['serialNumber']] = jsonResponse;
       navigation.navigate('Profile');
     })
     .catch(errorMsg => {
-      Alert.alert(
-        'Failed',
-        "Wrong serial number or the device has already been registered.",
-        [
-          // {text: 'Yes', onPress: () => console.log('Yes Pressed')},
-          // {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
-        ],
-        { cancelable: true }
-      );
+      make_alert("Failed", "Wrong serial number or the device has already been registered.")
     })
   }
 

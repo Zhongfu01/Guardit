@@ -7,15 +7,16 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from "react-native";
 
 const backgroundImage = require("../../image/background/fade.jpg");
 const rightArrowImage = require("../../image/icon/next.png");
 
 const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get('window').width;
 
-export default function Cover({ navigation }) {
+export default function Intro({ navigation }) {
   return (
     <View style={styles.container}>
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
@@ -66,7 +67,6 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 20,
     color: "white",
-    width: 300,
   },
   nextButtonContainer: {
     marginTop: screenHeight * .3
@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     height: 15,
   },
   scrollView: {
-    width: "100%",
-    alignItems: "center"
+    alignItems: "center",
   }
 });

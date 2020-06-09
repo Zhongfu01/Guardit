@@ -82,10 +82,13 @@ target 'Guardit' do
   pod 'Firebase'
   pod 'Firebase/InAppMessaging'
   pod 'Firebase/Analytics'
+  pod 'Firebase/Core'
   # add pods for any other desired Firebase products
   # https://firebase.google.com/docs/ios/setup#available-pods
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+
+  pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
 
   target 'GuarditTests' do
     inherit! :complete

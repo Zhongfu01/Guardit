@@ -6,16 +6,20 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Cover from './src/main_pages/Cover';
 import Login from './src/main_pages/Login';
 import Profile from './src/main_pages/Profile';
 import Intro from './src/add_devices/Intro';
 import Link from './src/add_devices/Link';
-import List from './src/manage/List';
+import DeviceList from './src/manage/DeviceList';
 import Signup from './src/main_pages/Signup';
+import BluetoothConnect from './src/manage/BluetoothConnect';BluetoothList
+import BluetoothList from './src/manage/BluetoothList';
 import firebase from 'react-native-firebase';
+import messaging, { AuthorizationStatus } from '@react-native-firebase/messaging';
+
 
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -28,7 +32,10 @@ import {
   View,
   Text,
   StatusBar,
-  AsyncStorage
+  AsyncStorage,
+  NativeEventEmitter,
+  NativeModules,
+  Alert
 } from 'react-native';
 
 import {
@@ -51,92 +58,21 @@ const config = {
 const Stack = createStackNavigator();
 const App: () => React$Node = () => {
 
-  checkPermission()
-  createNotificationListeners()
+  // firebase.messaging().getToken()
+  // .then(token => {
+  //   console.log(token);
+  // })
 
-  async function checkPermission() {
-    const enabled = await firebase.messaging().hasPermission();
-    if (enabled) {
-        getToken();
-    } else {
-        requestPermission();
-    }
-  }
 
-  async function getToken() {
-    let fcmToken = await AsyncStorage.getItem('fcmToken');
-    if (!fcmToken) {
-        fcmToken = await firebase.messaging().getToken();
-        if (fcmToken) {
-            // user has a device token
-            await AsyncStorage.setItem('fcmToken', fcmToken);
-        }
-    }
-  }
+  request_user_permission()
+  .then()
+  .catch(() => {
 
-  async function requestPermission() {
-    try {
-        await firebase.messaging().requestPermission();
-        // User has authorised
-        getToken();
-    } catch (error) {
-        // User has rejected permissions
-        console.log('permission rejected');
-    }
-  }
+  })
 
-  ////////////////////// Add these methods //////////////////////
-
-  // //Remove listeners allocated in createNotificationListeners()
-
-  // notificationListener();
-  // notificationOpenedListener();
-
-  /*
-  * Triggered when a particular notification has been received in foreground
-  * */
   firebase.notifications().onNotification((notification) => {
-      const { title, body } = notification;
-      showAlert(title, body);
+    firebase.notifications().displayNotification(notification);
   });
-
-  /*
-  * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
-  * */
-  firebase.notifications().onNotificationOpened((notificationOpen) => {
-      const { title, body } = notificationOpen.notification;
-      showAlert(title, body);
-  });
-
-  async function createNotificationListeners() {
-
-
-    /*
-    * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
-    * */
-    const notificationOpen = await firebase.notifications().getInitialNotification();
-    if (notificationOpen) {
-        const { title, body } = notificationOpen.notification;
-        this.showAlert(title, body);
-    }
-    /*
-    * Triggered for data only payload in foreground
-    * */
-    this.messageListener = firebase.messaging().onMessage((message) => {
-      //process data message
-      console.log(JSON.stringify(message));
-    });
-  }
-
-  function showAlert(title, body) {
-    Alert.alert(
-      title, body,
-      [
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ],
-      { cancelable: false },
-    );
-  }
 
   return (
     <NavigationContainer>
@@ -146,12 +82,24 @@ const App: () => React$Node = () => {
         <Stack.Screen options={{headerShown: false}} name="Profile" component={Profile} />
         <Stack.Screen options={{headerShown: true}} name="Intro" component={Intro} />
         <Stack.Screen options={{headerShown: true}} name="Link" component={Link} />
-        <Stack.Screen options={{headerShown: true}} name="List" component={List} />
+        <Stack.Screen options={{headerShown: true}} name="DeviceList" component={DeviceList} />
         <Stack.Screen options={{headerShown: true}} name="Signup" component={Signup} />
+        <Stack.Screen options={{headerShown: true}} name="BluetoothConnect" component={BluetoothConnect} />
+        <Stack.Screen options={{headerShown: true}} name="BluetoothList" component={BluetoothList} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
+async function request_user_permission() {
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === AuthorizationStatus.AUTHORIZED ||
+    authStatus === AuthorizationStatus.PROVISIONAL;
+
+  if (enabled) {
+    console.log('Authorization status:', authStatus);
+  }
+}
 
 export default App;

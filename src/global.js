@@ -5,5 +5,5 @@ export const UserInfo = {
   firstName: '',
   lastName: '',
   userId: '',
-  devices: {}
+  devices: []
 };

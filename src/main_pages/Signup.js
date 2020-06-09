@@ -14,6 +14,7 @@ import {
 import {post_request} from '../request/Requests';
 import {LocalSignUpUrl} from '../../url/Guardit';
 import {UserInfo} from '../global';
+import {make_alert} from '../Tool';
 
 const image = require("../../image/background/fade.jpg");
 const screenHeight = Dimensions.get('window').height;
@@ -39,38 +40,18 @@ export default function Signup({ navigation }) {
     )
     .then(jsonResponse => {
       // success
-      UserInfo.firstName = jsonResponse['firstName']
-      UserInfo.lastName = jsonResponse['lastName']
-      UserInfo.userId = jsonResponse['userId']
+      jsonResponse = jsonResponse["data"]
+      UserInfo.firstName = jsonResponse['firstName'];
+      UserInfo.lastName = jsonResponse['lastName'];
+      UserInfo.userId = jsonResponse['userId'];
+      UserInfo.devices = jsonResponse['devices']
       UserInfo.username = username;
       UserInfo.passwords = passwords;
-      Alert.alert(
-        //title
-        'Hello',
-        //body
-        'Thank you for registering Guard It account!',
-        [
-          // {text: 'Yes', onPress: () => console.log('Yes Pressed')},
-          // {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
-        ],
-        { cancelable: true }
-        //clicking out side of alert will cancel
-      );
+      make_alert("Welcome", "Thank you for registering Guard It account!")
       navigation.navigate('Profile')
     })
     .catch(errorMessage => {
-      Alert.alert(
-        //title
-        'Register error',
-        //body
-        "Sorry, the entered username already registered, please try something else.",
-        [
-          // {text: 'Yes', onPress: () => console.log('Yes Pressed')},
-          // {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
-        ],
-        { cancelable: true }
-        //clicking out side of alert will cancel
-      );
+      make_alert("Register error", "Sorry, the entered username already registered, please try something else.")
     })
   }
   return (
