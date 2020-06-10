@@ -25,7 +25,6 @@ const screenWidth = Dimensions.get('window').width;
 export default function Profile({ navigation }) {
   return (
     <View style={styles.container}>
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
             <Text style={styles.profileText}>
               <Text style={{fontWeight: 'bold'}}>Hello</Text>, {UserInfo.firstName}
@@ -47,7 +46,6 @@ export default function Profile({ navigation }) {
 
             </View>
           </ScrollView>
-      </ImageBackground>
     </View>
   );
 }
@@ -56,6 +54,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    backgroundColor: "#449dd1",
+    paddingVertical: 75,
   },
   backgroundImage: {
     paddingVertical: 70,

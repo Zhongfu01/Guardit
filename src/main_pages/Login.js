@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   footnodeText: {
     fontSize: 20,
-    color: "#8bafb5"
+    color: "rgba(0,0,0,0.6)"
   },
   scrollView: {
     alignItems: "center",

@@ -159,7 +159,7 @@ def register_device():
 @app.route('/update_device', methods=['POST'])
 def update_device():
     """
-    update_device(): update a device info according to request data.
+    update_device(): update one device info according to serial number.
     """
     result = {"success": True}
     data = request.get_json();

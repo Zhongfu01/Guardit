@@ -15,8 +15,11 @@ import Intro from './src/add_devices/Intro';
 import Link from './src/add_devices/Link';
 import DeviceList from './src/manage/DeviceList';
 import Signup from './src/main_pages/Signup';
-import BluetoothConnect from './src/manage/BluetoothConnect';BluetoothList
-import BluetoothList from './src/manage/BluetoothList';
+import DeviceSetting from './src/manage/DeviceSetting';
+import NicknameSetting from './src/manage/NicknameSetting';
+import SensitivitySetting from './src/manage/SensitivitySetting';
+import BackgroundColorSetting from './src/manage/BackgroundColorSetting';
+
 import firebase from 'react-native-firebase';
 import messaging, { AuthorizationStatus } from '@react-native-firebase/messaging';
 
@@ -24,6 +27,7 @@ import messaging, { AuthorizationStatus } from '@react-native-firebase/messaging
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { update_device } from './src/Tool'
 
 import {
   SafeAreaView,
@@ -35,7 +39,8 @@ import {
   AsyncStorage,
   NativeEventEmitter,
   NativeModules,
-  Alert
+  Alert,
+  Button
 } from 'react-native';
 
 import {
@@ -77,15 +82,17 @@ const App: () => React$Node = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen options={{headerShown: false}} name="Cover" component={Cover} />
-        <Stack.Screen options={{headerShown: false}} name="Login" component={Login} />
-        <Stack.Screen options={{headerShown: false}} name="Profile" component={Profile} />
-        <Stack.Screen options={{headerShown: true}} name="Intro" component={Intro} />
-        <Stack.Screen options={{headerShown: true}} name="Link" component={Link} />
-        <Stack.Screen options={{headerShown: true}} name="DeviceList" component={DeviceList} />
-        <Stack.Screen options={{headerShown: true}} name="Signup" component={Signup} />
-        <Stack.Screen options={{headerShown: true}} name="BluetoothConnect" component={BluetoothConnect} />
-        <Stack.Screen options={{headerShown: true}} name="BluetoothList" component={BluetoothList} />
+        <Stack.Screen options={{headerShown: false, headerTitle: ""}} name="Cover" component={Cover} />
+        <Stack.Screen options={{headerShown: false, headerTitle: ""}} name="Login" component={Login} />
+        <Stack.Screen options={{headerShown: false, headerTitle: ""}} name="Profile" component={Profile} />
+        <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="Intro" component={Intro} />
+        <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="Link" component={Link} />
+        <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="DeviceList" component={DeviceList} />
+        <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="Signup" component={Signup} />
+        <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="DeviceSetting" component={DeviceSetting} />
+        <Stack.Screen options={{headerShown: true,headerTitle: ""}} name="NicknameSetting" component={NicknameSetting} />
+        <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="SensitivitySetting" component={SensitivitySetting} />
+        <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="BackgroundColorSetting" component={BackgroundColorSetting} />
       </Stack.Navigator>
     </NavigationContainer>
   );

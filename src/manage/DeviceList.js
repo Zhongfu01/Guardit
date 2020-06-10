@@ -24,9 +24,6 @@ const backgroundImage = require("../../image/background/fade.jpg");
 const rightArrowImage = require("../../image/icon/next.png");
 const beetle1 = require("../../image/beetles/beetle1.png")
 const beetle2 = require("../../image/beetles/beetle2.png")
-
-// other good colors: 2EA399
-
 const screenWidth = Dimensions.get('window').width;
 
 export default function DeviceList({ navigation }) {
@@ -37,10 +34,10 @@ export default function DeviceList({ navigation }) {
     let newDevices = devices.slice();
     newDevices[index].powerState = !devices[index].powerState;
     setDevices(newDevices);
-    update_device(newDevices[index]);
+    update_power_remote(newDevices[index]);
   }
 
-  function update_device(newDevice) {
+  function update_power_remote(newDevice) {
     // user Userinfo.device to update device data in remote site
     post_request(
       LocalUpdateDeviceUrl,
@@ -59,7 +56,6 @@ export default function DeviceList({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View>
             <Text style={styles.title}>
@@ -77,8 +73,8 @@ export default function DeviceList({ navigation }) {
             {
               devices.length >= 0 && devices.map((device, index) => (
                 <TouchableOpacity
-                style={[styles.deviceCard, {backgroundColor: "#2EA399"}]}
-                onPress={() => navigation.navigate('BluetoothList')}
+                style={[styles.deviceCard, {backgroundColor: device.backgroundColor}]}
+                onPress={() => navigation.navigate('DeviceSetting', {"key": device["serialNumber"]})}
                 key={index}
                 >
                   <View style={styles.deviceCardLeft}>
@@ -87,6 +83,7 @@ export default function DeviceList({ navigation }) {
                     <View style={styles.switchContainer}>
                         <TouchableOpacity
                         style={styles.switchCircle}
+                        onPress={() => switch_change(index)}
                         >
                           <Switch
                             style={styles.switch}
@@ -111,7 +108,6 @@ export default function DeviceList({ navigation }) {
 
           </View>
         </ScrollView>
-      </ImageBackground>
     </View>
   );
 }
@@ -119,7 +115,8 @@ export default function DeviceList({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column"
+    flexDirection: "column",
+    backgroundColor: "#315288",
   },
   backgroundImage: {
     paddingVertical: 5,
