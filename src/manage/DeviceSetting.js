@@ -97,14 +97,19 @@ export default function DeviceSetting({ route, navigation }) {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.contentRow}>
+            <TouchableOpacity
+            style={styles.contentRow}
+            onPress={() => navigation.navigate("WifiSetting", {"key": route.params.key})}
+            >
               <Text style={styles.optionTitle}>
                 Wifi
               </Text>
               <View style={styles.optionContentBox}>
-                <Text style={styles.optionContent}>
-                  None
-                </Text>
+                {
+                  device.wifiConnected ?
+                  <Text style={styles.optionContent}> {device.wifiSsid} </Text>
+                  : <Text style={styles.optionContent}> None </Text>
+                }
                 <Image style={styles.nextButtonImage} source={rightArrowImage}/>
               </View>
             </TouchableOpacity>

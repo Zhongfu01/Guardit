@@ -87,7 +87,7 @@ export default function DeviceList({ navigation }) {
                         >
                           <Switch
                             style={styles.switch}
-                            trackColor={{ false: "#cccccc", true: "#cccccc" }}
+                            trackColor={{ false: "#cccccc", true: "#5abee3" }}
                             thumbColor={"white"}
                             ios_backgroundColor="#2EA399"
                             onValueChange={()=>{switch_change(index)}}
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   switchCircle: {
     width: 70,
     height: 70,
-    borderRadius: 40,
+    borderRadius: 30,
     backgroundColor: "rgba(196,196,196,0.27)",
     justifyContent: "center",
     alignItems: "center"
