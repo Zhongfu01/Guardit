@@ -3,6 +3,12 @@ import {
   Alert
 } from "react-native";
 
+import {beetle1Url} from '../url/Guardit';
+import {beetle2Url} from '../url/Guardit';
+import {beetle3Url} from '../url/Guardit';
+import {beetle4Url} from '../url/Guardit';
+import {beetle5Url} from '../url/Guardit';
+
 import {post_request} from './request/Requests';
 
 import {LocalUpdateDeviceUrl} from '../url/Guardit';
@@ -45,4 +51,27 @@ export function update_remote_device(newDevice) {
   .catch(errorMsg => {
     make_alert('Failed', 'Something went wrong while trying to update the device.');
   })
+}
+
+export function get_icon_url(iconName) {
+  // get icon url from the icon name
+  switch (iconName) {
+    case 'beetle1':
+      return beetle1Url
+      break;
+    case 'beetle2':
+      return beetle2Url
+      break;
+    case 'beetle3':
+      return beetle3Url
+      break;
+    case 'beetle4':
+      return beetle4Url
+      break;
+    case 'beetle5':
+      return beetle5Url
+      break;
+    default:
+      return beetle1Url
+  }
 }

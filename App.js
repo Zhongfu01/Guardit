@@ -19,6 +19,7 @@ import DeviceSetting from './src/manage/DeviceSetting';
 import NicknameSetting from './src/manage/NicknameSetting';
 import SensitivitySetting from './src/manage/SensitivitySetting';
 import BackgroundColorSetting from './src/manage/BackgroundColorSetting';
+import IconSetting from './src/manage/IconSetting';
 
 import firebase from 'react-native-firebase';
 import messaging, { AuthorizationStatus } from '@react-native-firebase/messaging';
@@ -93,6 +94,7 @@ const App: () => React$Node = () => {
         <Stack.Screen options={{headerShown: true,headerTitle: ""}} name="NicknameSetting" component={NicknameSetting} />
         <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="SensitivitySetting" component={SensitivitySetting} />
         <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="BackgroundColorSetting" component={BackgroundColorSetting} />
+        <Stack.Screen options={{headerShown: true, headerTitle: ""}} name="IconSetting" component={IconSetting} />
       </Stack.Navigator>
     </NavigationContainer>
   );

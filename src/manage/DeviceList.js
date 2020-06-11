@@ -18,7 +18,7 @@ import {LocalUpdateDeviceUrl} from '../../url/Guardit';
 import {UserInfo} from '../global';
 import {get_request} from '../request/Requests';
 import {post_request} from '../request/Requests';
-import {make_alert} from '../Tool';
+import {make_alert, get_icon_url} from '../Tool';
 
 const backgroundImage = require("../../image/background/fade.jpg");
 const rightArrowImage = require("../../image/icon/next.png");
@@ -101,7 +101,7 @@ export default function DeviceList({ navigation }) {
                     </View>
 
                   </View>
-                  <Image source={beetle1} style={styles.beetleImage}/>
+                  <Image source={get_icon_url(device.iconName)} style={styles.beetleImage}/>
                 </TouchableOpacity>
               ))
             }

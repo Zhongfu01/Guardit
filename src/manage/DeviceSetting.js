@@ -17,7 +17,7 @@ import {LocalUpdateDeviceUrl} from '../../url/Guardit';
 import {UserInfo} from '../global';
 import {get_request} from '../request/Requests';
 import {post_request} from '../request/Requests';
-import {make_alert} from '../Tool';
+import {make_alert, get_icon_url} from '../Tool';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -25,6 +25,8 @@ const rightArrowImage = require("../../image/icon/next.png");
 
 export default function DeviceSetting({ route, navigation }) {
   const [device, setDevice] = useState(UserInfo.devices[route.params.key]);
+  const beetleImageUrl = "../../image/beetles/" + device.iconName + ".png";
+
   return (
     <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -73,19 +75,24 @@ export default function DeviceSetting({ route, navigation }) {
                 Background Color
               </Text>
               <View style={styles.optionContentBox}>
-                <Text style={styles.optionContent}>
-                </Text>
+                <View style={styles.optionContent}>
+                  <View style={[styles.backgroundSample, {backgroundColor: device.backgroundColor}]}></View>
+                </View>
                 <Image style={styles.nextButtonImage} source={rightArrowImage}/>
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.contentRow}>
+            <TouchableOpacity
+            style={styles.contentRow}
+            onPress={() => navigation.navigate("IconSetting", {"key": route.params.key})}
+            >
               <Text style={styles.optionTitle}>
                 Icon
               </Text>
               <View style={styles.optionContentBox}>
-                <Text style={styles.optionContent}>
-                </Text>
+                <View style={styles.optionContent}>
+                  <Image source={get_icon_url(device.iconName)} style={[styles.iconSample]} />
+                </View>
                 <Image style={styles.nextButtonImage} source={rightArrowImage}/>
               </View>
             </TouchableOpacity>
@@ -158,6 +165,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     width: screenWidth * .2,
+    alignItems: "center"
   },
   optionContentBox: {
     flexDirection: "row",
@@ -168,5 +176,13 @@ const styles = StyleSheet.create({
   nextButtonImage: {
     width: screenWidth * .03,
     height: screenHeight * .03,
+  },
+  backgroundSample: {
+    width: screenWidth * .06,
+    height: screenHeight * .03
+  },
+  iconSample: {
+    width: screenWidth * .07,
+    height: screenHeight * .04
   }
 });
