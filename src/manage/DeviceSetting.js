@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useIsFocused } from '@react-navigation/native'
 import {
   StyleSheet,
   Text,
@@ -24,8 +25,16 @@ const screenWidth = Dimensions.get('window').width;
 const rightArrowImage = require("../../image/icon/next.png");
 
 export default function DeviceSetting({ route, navigation }) {
-  const [device, setDevice] = useState(UserInfo.devices[route.params.key]);
+  const key = route.params.key;
+  const [device, setDevice] = useState(UserInfo.devices[key]);
   const beetleImageUrl = "../../image/beetles/" + device.iconName + ".png";
+  const isFocused = useIsFocused()
+
+  // re-render after coming back
+  React.useEffect(() => {
+    setDevice(UserInfo.devices[key])
+  } , [isFocused])
+
 
   return (
     <View style={styles.container}>
@@ -38,7 +47,7 @@ export default function DeviceSetting({ route, navigation }) {
 
           <View style={styles.content}>
             <TouchableOpacity
-            onPress={() => navigation.navigate("NicknameSetting", {"key": route.params.key})}
+            onPress={() => navigation.navigate("NicknameSetting", {"key": key})}
             style={styles.contentRow}
             >
               <Text style={styles.optionTitle}>
@@ -54,7 +63,7 @@ export default function DeviceSetting({ route, navigation }) {
 
             <TouchableOpacity
             style={styles.contentRow}
-            onPress={() => navigation.navigate("SensitivitySetting", {"key": route.params.key})}
+            onPress={() => navigation.navigate("SensitivitySetting", {"key": key})}
             >
               <Text style={styles.optionTitle}>
                 Sensitivity
@@ -69,7 +78,7 @@ export default function DeviceSetting({ route, navigation }) {
 
             <TouchableOpacity
             style={styles.contentRow}
-            onPress={() => navigation.navigate("BackgroundColorSetting", {"key": route.params.key})}
+            onPress={() => navigation.navigate("BackgroundColorSetting", {"key": key})}
             >
               <Text style={styles.optionTitle}>
                 Background Color
@@ -84,7 +93,7 @@ export default function DeviceSetting({ route, navigation }) {
 
             <TouchableOpacity
             style={styles.contentRow}
-            onPress={() => navigation.navigate("IconSetting", {"key": route.params.key})}
+            onPress={() => navigation.navigate("IconSetting", {"key": key})}
             >
               <Text style={styles.optionTitle}>
                 Icon
@@ -99,7 +108,7 @@ export default function DeviceSetting({ route, navigation }) {
 
             <TouchableOpacity
             style={styles.contentRow}
-            onPress={() => navigation.navigate("WifiSetting", {"key": route.params.key})}
+            onPress={() => navigation.navigate("WifiSetting", {"key": key})}
             >
               <Text style={styles.optionTitle}>
                 Wifi

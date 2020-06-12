@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import { useIsFocused } from '@react-navigation/native'
+
 import {
   ImageBackground,
   StyleSheet,
@@ -24,6 +26,12 @@ export default function DeviceList({ navigation }) {
 
   const [devices, setDevices] = useState(Object.values(UserInfo.devices));
   const [spin, setSpin] = useState(false);
+  const isFocused = useIsFocused()
+
+  // re-render after coming back
+  React.useEffect(() => {
+    setDevices(Object.values(UserInfo.devices))
+  } , [isFocused])
 
   function adjust_nickname_length(name) {
     if (name.length > 8) {
