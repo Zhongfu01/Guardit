@@ -10,7 +10,8 @@ import {
   ScrollView,
   Dimensions,
   Alert,
-  Button
+  Button,
+  ActivityIndicator
 } from "react-native";
 
 import {LocalSignInUrl} from '../../url/Guardit';
@@ -24,6 +25,7 @@ const rightArrowImage = require("../../image/icon/next.png");
 export default function SensitivitySetting({ route, navigation }) {
   const key = route.params.key;
   const device = UserInfo.devices[key];
+  const [spin, setSpin] = useState(false);
   const [sensitivity, onChangeSensitivity] = useState(device.sensitivity);
 
   React.useLayoutEffect(() => {
@@ -33,8 +35,15 @@ export default function SensitivitySetting({ route, navigation }) {
             title="Done "
             onPress = {
               () => {
+                setSpin(true);
                 update_sensitivity();
                 update_remote_device(UserInfo.devices[key])
+                .then(() => {
+                  setSpin(false);
+                })
+                .catch(() => {
+                  setSpin(false);
+                });
               }
             }
             />
@@ -49,6 +58,12 @@ export default function SensitivitySetting({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+          <View style={styles.activityIndicatorContainer}>
+            <ActivityIndicator
+            animating={spin}
+            size="large"
+            color="rgba(0,0,0,0.4)" />
+          </View>
           <View>
             <Text style={styles.title}>
               Choose sensitivity
@@ -136,5 +151,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 30,
     color: "white"
+  },
+  activityIndicatorContainer: {
+    position: "absolute",
+    left: screenWidth * .47,
+    top: screenHeight * .4,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
   }
 });

@@ -9,7 +9,8 @@ import {
   ScrollView,
   Dimensions,
   Alert,
-  Button
+  Button,
+  ActivityIndicator
 } from "react-native";
 
 import {LocalSignInUrl} from '../../url/Guardit';
@@ -23,6 +24,7 @@ const rightArrowImage = require("../../image/icon/next.png");
 export default function WifiSetting({ route, navigation }) {
   const key = route.params.key;
   const device = UserInfo.devices[key];
+  const [spin, setSpin] = useState(false);
   const [ssid, onChangeSsid] = useState(device.wifiSsid);
   const [password, onChangePassword] = useState(device.wifiPassword);
   const ssidInput = React.createRef();
@@ -35,8 +37,15 @@ export default function WifiSetting({ route, navigation }) {
             title="Done "
             onPress = {
               () => {
+                setSpin(true);
                 update_wifi_info();
                 update_remote_device(UserInfo.devices[key])
+                .then(() => {
+                  setSpin(false);
+                })
+                .catch(() => {
+                  setSpin(false);
+                });
               }
             }
             />
@@ -60,6 +69,12 @@ export default function WifiSetting({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.activityIndicatorContainer}>
+        <ActivityIndicator
+        animating={spin}
+        size="large"
+        color="rgba(0,0,0,0.4)" />
+      </View>
         <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View>
             <Text style={styles.title}>
@@ -77,6 +92,7 @@ export default function WifiSetting({ route, navigation }) {
                 autoCorrect={false}
                 autoCapitalize={'none'}
                 placeholder={"ssid"}
+                defaultValue={device.wifiSsid}
                 placeholderTextColor="#202020"
                 onChangeText={text => onChangeSsid(text)}
               />
@@ -92,6 +108,7 @@ export default function WifiSetting({ route, navigation }) {
                 autoCorrect={false}
                 autoCapitalize={'none'}
                 placeholder={"password"}
+                defaultValue={device.wifiPassword}
                 placeholderTextColor="#202020"
                 onChangeText={text => onChangePassword(text)}
               />
@@ -153,5 +170,13 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     color: "white"
+  },
+  activityIndicatorContainer: {
+    position: "absolute",
+    left: screenWidth * .47,
+    top: screenHeight * .4,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
   }
 });

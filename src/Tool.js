@@ -1,6 +1,9 @@
-
+import React, {useState} from 'react';
 import {
-  Alert
+  Alert,
+  StyleSheet,
+  View,
+  Text,
 } from "react-native";
 
 import {beetle1Url} from '../url/Guardit';
@@ -39,17 +42,21 @@ export function make_alert(title, body) {
 
 export function update_remote_device(newDevice) {
   // user Userinfo.device to update device data in remote site
-  post_request(
-    LocalUpdateDeviceUrl,
-    newDevice
-  )
-  .then(jsonResponse => {
-    // success
-    jsonResponse = jsonResponse["data"]
-    make_alert('Success', 'The device has been updated successfully.');
-  })
-  .catch(errorMsg => {
-    make_alert('Failed', 'Something went wrong while trying to update the device.');
+  return new Promise((resolve, reject) => {
+    post_request(
+      LocalUpdateDeviceUrl,
+      newDevice
+    )
+    .then(jsonResponse => {
+      // success
+      jsonResponse = jsonResponse["data"]
+      make_alert('Success', 'The device has been updated successfully.');
+      resolve();
+    })
+    .catch(errorMsg => {
+      make_alert('Failed', 'Something went wrong while trying to update the device.');
+      reject();
+    })
   })
 }
 

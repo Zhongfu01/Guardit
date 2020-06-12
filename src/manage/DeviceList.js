@@ -10,52 +10,50 @@ import {
   Switch,
   ScrollView,
   Dimensions,
-  Alert
+  Alert,
+  ActivityIndicator
 } from "react-native";
 
-import {LocalSignInUrl} from '../../url/Guardit';
-import {LocalUpdateDeviceUrl} from '../../url/Guardit';
 import {UserInfo} from '../global';
-import {get_request} from '../request/Requests';
-import {post_request} from '../request/Requests';
-import {make_alert, get_icon_url} from '../Tool';
+import {get_icon_url, update_remote_device} from '../Tool';
 
-const backgroundImage = require("../../image/background/fade.jpg");
-const rightArrowImage = require("../../image/icon/next.png");
-const beetle1 = require("../../image/beetles/beetle1.png")
-const beetle2 = require("../../image/beetles/beetle2.png")
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 export default function DeviceList({ navigation }) {
 
   const [devices, setDevices] = useState(Object.values(UserInfo.devices));
+  const [spin, setSpin] = useState(false);
+
+  function adjust_nickname_length(name) {
+    if (name.length > 8) {
+      return name.substring(0, 8) + "..";
+    }
+    return name;
+  }
 
   function switch_change(index) {
     let newDevices = devices.slice();
+    setSpin(true);
     newDevices[index].powerState = !devices[index].powerState;
     setDevices(newDevices);
-    update_power_remote(newDevices[index]);
-  }
-
-  function update_power_remote(newDevice) {
-    // user Userinfo.device to update device data in remote site
-    post_request(
-      LocalUpdateDeviceUrl,
-      newDevice
-    )
-    .then(jsonResponse => {
-      // success
-      jsonResponse = jsonResponse["data"]
-      make_alert('Success', 'The device has been updated successfully.');
+    update_remote_device(newDevices[index])
+    .then(() => {
+      setSpin(false);
     })
-    .catch(errorMsg => {
-      make_alert('Failed', 'Something went wrong while trying to update the device.');
-    })
+    .catch(() => {
+      setSpin(false);
+    });
   }
-
 
   return (
     <View style={styles.container}>
+    <View style={styles.activityIndicatorContainer}>
+      <ActivityIndicator
+      animating={spin}
+      size="large"
+      color="rgba(0,0,0,0.4)" />
+    </View>
         <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View>
             <Text style={styles.title}>
@@ -64,7 +62,6 @@ export default function DeviceList({ navigation }) {
           </View>
 
           <View style={styles.content}>
-
             {
               devices.length == 0 && <View style={styles.pendingTextBox}>
                 <Text style={styles.pendingText}>Loading ... </Text>
@@ -78,7 +75,7 @@ export default function DeviceList({ navigation }) {
                 key={index}
                 >
                   <View style={styles.deviceCardLeft}>
-                    <Text style={styles.cardText}>{device.nickname} </Text>
+                    <Text style={styles.cardText}>{adjust_nickname_length(device.nickname)} </Text>
 
                     <View style={styles.switchContainer}>
                         <TouchableOpacity
@@ -89,7 +86,7 @@ export default function DeviceList({ navigation }) {
                             style={styles.switch}
                             trackColor={{ false: "#cccccc", true: "#5abee3" }}
                             thumbColor={"white"}
-                            ios_backgroundColor="#2EA399"
+                            ios_backgroundColor="rgba(0,0,0,0.2)"
                             onValueChange={()=>{switch_change(index)}}
                             value={device.powerState}
                             opacity={0.9}
@@ -158,7 +155,7 @@ const styles = StyleSheet.create({
   },
   beetleImage: {
     width: 85,
-    height: 85
+    height: 85,
   },
   switchContainer: {
     width: 108,
@@ -169,7 +166,7 @@ const styles = StyleSheet.create({
   switchCircle: {
     width: 70,
     height: 70,
-    borderRadius: 30,
+    borderRadius: 35,
     backgroundColor: "rgba(196,196,196,0.27)",
     justifyContent: "center",
     alignItems: "center"
@@ -193,5 +190,13 @@ const styles = StyleSheet.create({
     textAlign:"center",
     fontSize: screenWidth * .055,
     color: "rgba(0,0,0,0.5)"
+  },
+  activityIndicatorContainer: {
+    position: "absolute",
+    left: screenWidth * .47,
+    top: screenHeight * .4,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
   }
 });

@@ -9,7 +9,8 @@ import {
   ScrollView,
   Dimensions,
   Alert,
-  Button
+  Button,
+  ActivityIndicator
 } from "react-native";
 
 import {LocalSignInUrl} from '../../url/Guardit';
@@ -29,6 +30,7 @@ export default function IconSetting({ route, navigation }) {
   const key = route.params.key;
   const device = UserInfo.devices[key];
   const [iconName, onChangeIconName] = useState(device.iconName);
+  const [spin, setSpin] = useState(false);
   const icons = [
     {'url': beetle1Url, 'iconName': 'beetle1'},
     {'url': beetle2Url, 'iconName': 'beetle2'},
@@ -44,8 +46,15 @@ export default function IconSetting({ route, navigation }) {
             title="Done "
             onPress = {
               () => {
+                setSpin(true);
                 update_icon();
                 update_remote_device(UserInfo.devices[key])
+                .then(() => {
+                  setSpin(false);
+                })
+                .catch(() => {
+                  setSpin(false);
+                });
               }
             }
             />
@@ -61,6 +70,12 @@ export default function IconSetting({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+        <View style={styles.activityIndicatorContainer}>
+          <ActivityIndicator
+          animating={spin}
+          size="large"
+          color="rgba(0,0,0,0.4)" />
+        </View>
         <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View style={styles.contentContainer}>
             <Text style={styles.title}>
@@ -140,5 +155,13 @@ const styles = StyleSheet.create({
   chosenBackgroundColor: {
     backgroundColor: "rgba(0,0,0,0.4)",
     borderRadius: screenHeight * .01
+  },
+  activityIndicatorContainer: {
+    position: "absolute",
+    left: screenWidth * .47,
+    top: screenHeight * .4,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
   }
 });

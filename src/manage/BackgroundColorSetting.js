@@ -9,7 +9,8 @@ import {
   ScrollView,
   Dimensions,
   Alert,
-  Button
+  Button,
+  ActivityIndicator
 } from "react-native";
 
 import {LocalSignInUrl} from '../../url/Guardit';
@@ -23,6 +24,7 @@ const rightArrowImage = require("../../image/icon/next.png");
 export default function BackgroundColorSetting({ route, navigation }) {
   const key = route.params.key;
   const device = UserInfo.devices[key];
+  const [spin, setSpin] = useState(false);
   const [backgroundColor, onChangeBackgroundColor] = useState(device.backgroundColor);
   const colors = ["#2EA399", "#3173c9", "#4180c8", "#6d63a8"];
 
@@ -33,8 +35,15 @@ export default function BackgroundColorSetting({ route, navigation }) {
             title="Done "
             onPress = {
               () => {
+                setSpin(true);
                 update_background_color();
                 update_remote_device(UserInfo.devices[key])
+                .then(() => {
+                  setSpin(false);
+                })
+                .catch(() => {
+                  setSpin(false);
+                });
               }
             }
             />
@@ -50,6 +59,12 @@ export default function BackgroundColorSetting({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+        <View style={styles.activityIndicatorContainer}>
+          <ActivityIndicator
+          animating={spin}
+          size="large"
+          color="rgba(0,0,0,0.4)" />
+        </View>
         <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
           <View style={styles.contentContainer}>
             <Text style={styles.title}>
@@ -118,5 +133,13 @@ const styles = StyleSheet.create({
   chosenBackgroundColor: {
     borderWidth: 2,
     borderColor: "white"
+  },
+  activityIndicatorContainer: {
+    position: "absolute",
+    left: screenWidth * .47,
+    top: screenHeight * .4,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
   }
 });
